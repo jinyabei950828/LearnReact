@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <!-- react的核心库和操作dom的核心库 -->
+    <script src="https://cdn.bootcss.com/react/16.8.6/umd/react.development.js"></script>
+    <script src="https://cdn.bootcss.com/react-dom/16.8.6/umd/react-dom.development.js"></script>
+    <!-- 用于解析babel -->
+    <script src="https://cdn.bootcss.com/babel-standalone/6.26.0/babel.js"></script>
+  </head>
+  <body>
+    <div>
+      <p>无状态组件</p>
+      <div id="root1"></div>
+      <hr/>
+      <p>有状态组件</p>
+      <div id="root2"></div>
+      <div id="root3"></div>
+      <hr/>
+      <p>事件处理</p>
+      <div id="root4"></div>
+      <div id="root5"></div>
+      <hr/>
+      <p>事件处理&条件处理</p>
+      <div id="root6"></div>
+    </div>
+
+    <!-- 函数式组件（无状态组件）props传值，无state和生命周期 -->
+    <script type='text/babel'>
+      function Hello(props){
+        return <div>
+          <h1>hello casey</h1>
+          <p>姓名:{props.name}</p>
+          <p>姓名:{props.age}</p>
+          <p>擅长:cv大法</p>
+        </div>
+      }
+
+      ReactDOM.render(
+        <Hello name='Casey' age='18'/>,
+        document.getElementById('root1')
+      )
+    </script>
+
+    <!-- class组件(有状态组件) 有props、state和生命周期-->
+    <script type="text/babel">
+      class Hello extends React.Component{
+        constructor(props){
+          //得到父类的this对象
+          super(props)//需要在构造函数中使用this.props/props，就在super中加上(props),否则就不用
+          this.state = {
+            name:'hello',
+            age:12
+          }
+          console.log(this.props)
+        }
+        // render是生命周期底层的方法
+        render(){
+          return <div>
+            <h1>我是一个有状态的组件</h1>
+            <p>姓名:{this.state.name}</p>
+            <p>年龄:{this.state.age}</p>
+            <p>职业:前端开发</p>
+            <p>传进来的姓名:{this.props.name}</p>
+            <p>传进来的年龄:{this.props.age}</p>
+          </div>
+        }
+      }
+
+      ReactDOM.render(
+        <Hello name='Casey' age='18'/>,
+        document.getElementById('root2')
+      )
+    </script>
+
+    <!-- class组件 state简写（推荐） -->
+    <script type="text/babel">
+      class Hello extends React.Component{
+        state = {
+          name:'hello',
+          age:12
+        }
+
+        render(){
+          return <div>
+            <h1>我是一个有状态的组件</h1>
+            <p>姓名:{this.state.name}</p>
+            <p>年龄:{this.state.age}</p>
+            <p>职业:前端开发</p>
+            <p>传进来的姓名:{this.props.name}</p>
+            <p>传进来的年龄:{this.props.age}</p>
+          </div>
+        }
+      }
+
+      ReactDOM.render(
+        <Hello name='Casey' age='18'/>,
+        document.getElementById('root3')
+      )
+    </script>
+
+    <!-- 事件处理 -->
+    <script type="text/babel">
+      class Hello extends React.Component{
+        constructor(){
+          super()
+          this.state = {
+            name:'world',
+            age:13,
+            flag:true
+          }
+          this.updateAge = this.updateAge.bind(this)
+          this.updateFlag = this.updateFlag.bind(this)
+          this.handleClick = this.handleClick.bind(this)
+        }
+
+        updateAge(){
+          this.setState({age:this.state.age+1})
+        }
+
+        updateFlag(){
+          this.setState({flag:!this.state.flag})
+        }
+
+        handleClick(e){
+          e.preventDefault()
+          console.log('hello')
+        }
+
+        render(){
+          return <div>
+            <h1>我是一个有状态的组件</h1>
+            <p>姓名:{this.state.name}</p>
+            <p>年龄:{this.state.age}</p>
+            <p>职业:前端开发</p>
+            <a href="#" onClick={this.handleClick}>click</a>
+            <button onClick={this.updateAge}>长大</button>
+            <button onClick={this.updateFlag}>{this.state.flag?'Yes':'No'}</button>
+          </div>
+        }
+      }
+
+      ReactDOM.render(
+        <Hello name='Casey' age='18'/>,
+        document.getElementById('root4')
+      )
+    </script>
+
+    <!-- 事件处理 简写修改this的指向 -->
+    <script type="text/babel">
+      class Hello extends React.Component{
+        state = {
+          name:'world',
+          age:13,
+          flag:true
+        }
+
+        updateAge(){
+          this.setState({age:this.state.age+1})
+        }
+
+        updateName(){
+          this.setState({name:'jindu'})
+        }
+
+        // 比较推荐
+        updateFlag = ()=>{
+          this.setState({flag:!this.state.flag})
+        }
+
+        render(){
+          return <div>
+            <h1>我是一个有状态的组件</h1>
+            <p>姓名:{this.state.name}</p>
+            <p>年龄:{this.state.age}</p>
+            <p>职业:前端开发</p>
+            <button onClick={this.updateAge.bind(this)}>更新年龄</button>
+            <button onClick={()=>this.updateName()}>改名字</button>
+            <button onClick={this.updateFlag}>{this.state.flag?'Yes':'No'}</button>
+          </div>
+        }
+      }
+
+      ReactDOM.render(
+        <Hello name='Casey' age='18'/>,
+        document.getElementById('root4')
+      )
+    </script>
+
+    <!-- 事件处理&条件处理 -->
+    <script  type="text/babel">
+      function Login(props){
+        return <button onClick={props.update}>子组件login</button>
+      }
+
+      function Logout(props){
+        return <button onClick={props.update}>子组件Logout</button>
+      }
+
+      class App extends React.Component{
+        state = {
+          isLogin:false
+        }
+
+        updateState = ()=>{
+          this.setState({isLogin:!this.state.isLogin})
+        }
+
+        render(){
+          //解构的写法比较推荐 jsx无法渲染boolean值，需要toString一下
+          const { isLogin } = this.state
+          return <div>
+            <h1>这是一个有状态的组件</h1>
+            {isLogin?<Login update={this.updateState}/>:<Logout update={this.updateState}/>}
+            <p>{isLogin.toString()}</p>
+            <button onClick={this.updateState}>父组件更新状态</button>
+          </div>
+        }
+      }
+
+      ReactDOM.render(
+        <App/>,
+        document.getElementById('root6')
+      )
+    </script>
+  </body>
+</html>
