@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <!-- react的核心库和操作dom的核心库 -->
+    <script src="https://cdn.bootcss.com/react/16.8.6/umd/react.development.js"></script>
+    <script src="https://cdn.bootcss.com/react-dom/16.8.6/umd/react-dom.development.js"></script>
+    <!-- 用于解析babel -->
+    <script src="https://cdn.bootcss.com/babel-standalone/6.26.0/babel.js"></script>
+  </head>
+  <body>
+    <style>
+      .danger{
+        color:red
+      }
+    </style>
+    <div>
+      <p>受控组件</p>
+      <div id="root1"></div>
+      <hr/>
+      <div id="root2"></div>
+      <hr />
+      <div>表单</div>
+      <div id="root3"></div>
+      <hr/>
+      <div>简单表单封装</div>
+      <div id="root4"></div>
+      <hr/>
+      <div>复杂表单封装</div>
+      <div id="root5"></div>
+      <hr/>
+      <div>注册表单验证</div>
+      <div id="root6"></div>
+      <hr/>
+      <div>注册表单优化</div>
+      <div id="root7"></div>
+    </div>
+
+    <!-- 受控组件(设置了value,怎么修改value都不起作用) -->
+    <script type='text/babel'>
+      class Hello extends React.Component{
+        render(){
+          return <input type='text' defaultValue='123'/>
+        }
+      }
+
+      ReactDOM.render(
+        <Hello/>,
+        document.getElementById('root1')
+      )
+    </script>
+
+     <!-- 实现双向数据绑定 -->
+     <script type='text/babel'>
+      class Hello extends React.Component{
+        state = {
+          value:'123'
+        }
+        change = (e)=>{
+          this.setState({value:e.target.value})
+        }
+        render(){
+          return <div>
+            <input type='text' defaultValue={this.state.value} onChange={this.change}/>
+            <p>{this.state.value}</p>
+            <br/>
+            <label> 空值:
+              <input type='radio' />男
+              <input type='radio' />女
+            </label>
+            <br/>
+            <label> 默认值:
+              <input type='radio' defaultChecked/>男
+              <input type='radio' />女
+            </label>
+            <br/>
+            <label> 空值:
+              <input type='checkbox' />苹果
+              <input type='checkbox' />香蕉
+              <input type='checkbox' />西瓜
+              <input type='checkbox' />橙子
+            </label>
+            <br/>
+            <label> 默认值:
+              <input type='checkbox' defaultChecked/>苹果
+              <input type='checkbox' />香蕉
+              <input type='checkbox' />西瓜
+              <input type='checkbox' />橙子
+            </label>
+            <br/>
+            <label> 空值:
+              <select>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+              </select>
+            </label>
+            <br/>
+            <label> 默认值:
+              <select defaultValue='B'>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+              </select>
+            </label>
+            <br/>
+            <label> 多个默认值,传入数组:
+              <select multiple defaultValue={['B','C']}>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+              </select>
+            </label>
+          </div>
+        }
+      }
+
+      ReactDOM.render(
+        <Hello/>,
+        document.getElementById('root2')
+      )
+    </script>
+
+    <!-- 表单 -->
+    <script type='text/babel'>
+      class Hello extends React.Component{
+        state = {
+          name:'jindu',
+          sex:'1',
+          select:'B',
+          select1:'E',
+          text:'hello world',
+          select2:'2'
+        }
+
+        handleInput = (e)=>{
+          this.setState({name:e.target.value})
+        }
+
+        handleRadio = (e)=>{
+          this.setState({sex:e.target.value})
+        }
+
+        handleSelect = (e)=>{
+          this.setState({select:e.target.value})
+        }
+
+        handleSelect1 = (e)=>{
+          this.setState({select1:e.target.value})
+        }
+
+        handleSelect2 = (e)=>{
+          this.setState({select2:e.target.value})
+        }
+
+        handleText = (e)=>{
+          this.setState({text:e.target.value})
+        }
+
+        handleSubmit = ()=>{
+          alert(JSON.stringify(this.state))
+          console.log(this.state)
+        }
+
+        render(){
+          let {name,sex,select,text,select1,select2} = this.state
+          const arr1 = ['D','E','F']
+          const arr2 = [
+            {id:'1',color:'red'},
+            {id:'2',color:'green'},
+            {id:'3',color:'blue'}
+          ]
+          return <div>
+            <form>
+              <label>姓名:<input type='text' defaultValue={name} onChange={this.handleInput}/></label>
+              <br/>
+              <label>性别:
+                <input type='radio' name='sex' value='1' 
+                  defaultChecked={sex==='1'?true:false}
+                  onChange={this.handleRadio}/>男
+                <input type='radio' name='sex' value='2'
+                  defaultChecked={sex==='2'?true:false}
+                  onChange={this.handleRadio}/>女
+              </label>
+              <br/>
+              <label>写死选项:
+                <select defaultValue={select} onChange={this.handleSelect}>
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                  <option value="C">C</option>
+               </select>
+              </label>
+              <br/>
+              <label>循环选项:
+                <select defaultValue={select1} onChange={this.handleSelect1}>
+                  {
+                    arr1.map((item,index) => {
+                      return <option key={index} value={item}>{item}</option>
+                    })
+                  } 
+               </select>
+              </label>
+              <br/>
+              <label>数组中是对象，循环选项:
+                <select defaultValue={select2} onChange={this.handleSelect2}>
+                  {
+                    arr2.map(item => {
+                      return <option key={item.id} value={item.id}>{item.color}</option>
+                    })
+                  } 
+               </select>
+              </label>
+              <br/>
+              <label>备注:
+                <textarea defaultValue={text} onChange={this.handleText}></textarea>
+              </label>
+              <button onClick={this.handleSubmit}>提交</button>
+            </form>
+          </div>
+        }
+      }
+
+      ReactDOM.render(
+        <Hello />,
+        document.getElementById("root3")
+      )
+    </script>
+
+    <!-- 简单表单 -->
+    <script type='text/babel'>
+      class Hello extends React.Component{
+        state = {
+          name:'',
+          password:'',
+          address:''
+        }
+
+        handleChange = (e)=>{
+          const {name,value} = e.target
+          this.setState({[name]:value})
+        }
+
+        handleSubmit = ()=>{
+          // e.preventDefault()
+          alert(JSON.stringify(this.state))
+          console.log(this.state)
+        }
+
+        render(){
+          let {name,password,address} = this.state
+          return <div>
+            <form>
+              <label>姓名:
+                <input type='text' name='name' defaultValue={name} 
+                onChange={this.handleChange}/>
+              </label>
+              <br/>
+              <label>密码:
+                <input type='password' name='password' defaultValue={password} 
+                onChange={this.handleChange}/>
+              </label>
+              <br/>
+              <label>地址:
+                <textarea defaultValue={address} name='address' onChange={this.handleChange}></textarea>
+              </label>
+              <button onClick={this.handleSubmit}>提交</button>
+            </form>
+          </div>
+        }
+      }
+
+      ReactDOM.render(
+        <Hello />,
+        document.getElementById("root4")
+      )
+    </script>
+
+    <!-- 复杂表单 -->
+    <script type='text/babel'>
+            class Hello extends React.Component{
+        state = {
+          name:'jindu',
+          sex:'1',
+          select:'B',
+          select1:'E',
+          text:'hello world',
+          select2:'2'
+        }
+
+        handleChange = (e)=>{
+          const {name,value} = e.target
+          this.setState({[name]:value})
+        }
+
+        handleSubmit = ()=>{
+          alert(JSON.stringify(this.state))
+          console.log(this.state)
+        }
+
+        render(){
+          let {name,sex,select,text,select1,select2} = this.state
+          const arr1 = ['D','E','F']
+          const arr2 = [
+            {id:'1',color:'red'},
+            {id:'2',color:'green'},
+            {id:'3',color:'blue'}
+          ]
+          return <div>
+            <form>
+              <label>姓名:<input type='text' defaultValue={name} name='name'
+                onChange={this.handleChange}/></label>
+              <br/>
+              <label>性别:
+                <input type='radio' name='sex' value='1' 
+                  defaultChecked={sex==='1'?true:false}
+                  onChange={this.handleChange}/>男
+                <input type='radio' name='sex' value='2'
+                  defaultChecked={sex==='2'?true:false}
+                  onChange={this.handleChange}/>女
+              </label>
+              <br/>
+              <label>写死选项:
+                <select name='select' defaultValue={select} onChange={this.handleChange}>
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                  <option value="C">C</option>
+               </select>
+              </label>
+              <br/>
+              <label>循环选项:
+                <select name='select1' defaultValue={select1} onChange={this.handleChange}>
+                  {
+                    arr1.map((item,index) => {
+                      return <option key={index} value={item}>{item}</option>
+                    })
+                  } 
+               </select>
+              </label>
+              <br/>
+              <label>数组中是对象，循环选项:
+                <select name='select2' defaultValue={select2} onChange={this.handleChange}>
+                  {
+                    arr2.map(item => {
+                      return <option key={item.id} value={item.id}>{item.color}</option>
+                    })
+                  } 
+               </select>
+              </label>
+              <br/>
+              <label>备注:
+                <textarea name='text' defaultValue={text} onChange={this.handleChange}></textarea>
+              </label>
+              <button onClick={this.handleSubmit}>提交</button>
+            </form>
+          </div>
+        }
+      }
+
+      ReactDOM.render(
+        <Hello />,
+        document.getElementById("root5")
+      )
+    </script>
+
+     <!-- 注册表单验证 -->
+     <script type='text/babel'>
+      class Hello extends React.Component{
+        state = {
+          name:'',
+          nameError:'',
+          password:'',
+          passwordError:'',
+          sex:'1',
+          phone:'',
+          phoneError:'',
+          city:''
+        }
+
+        nameChange = (e)=>{
+          const rule = /^[a-zA-Z0-9_-]{4,16}$/
+          const value = e.target.value
+          let error = ''
+          if(!value){
+            error = '请输入昵称'
+          }else if(!rule.test(value)){
+            error = '请输入4-10位昵称'
+          }else{
+            error = ''
+          }
+          this.setState({
+            name:value,
+            nameError:error
+          })
+        }
+
+        passwordChange = (e)=>{
+          //密码6-12位,包含一个大写、一个小写、一个数字、一个特殊符号
+          const rule = /^\S*(?=\S{6,12})(?=\S*\d)(?=\S*[A-Z])(?=\S*[a-z])(?=\S*[!@#$%^&*? ])\S*$/
+          const value = e.target.value
+          let error = ''
+          if(!value){
+            error = '请输入密码'
+          }else if(!rule.test(value)){
+            error = '6-12位密码需要包含大小写字母和数字以及特殊符号'
+          }else{
+            error = ''
+          }
+          this.setState({
+            password:value,
+            passwordError:error
+          })
+        }
+
+        phoneChange = (e)=>{
+          //密码6-12位,包含一个大写、一个小写、一个数字、一个特殊符号
+          const rule = /^(?:(?:\+|00)86)?1[3-9]\d{9}$/
+          const value = e.target.value
+          let error = ''
+          if(!value){
+            error = '请输入手机号'
+          }else if(!rule.test(value)){
+            error = '请输入格式正确的手机号'
+          }else{
+            error = ''
+          }
+          this.setState({
+            phone:value,
+            phoneError:error
+          })
+        }
+
+        handleChange = (e)=>{
+          const {name,value} = e.target
+          this.setState({[name]:value})
+        }
+
+        handleSubmit = ()=>{
+          alert(JSON.stringify(this.state))
+          console.log(this.state)
+        }
+
+        render(){
+          let {name,nameError,password,passwordError,sex,phone,phoneError,city} = this.state
+          const arr2 = [
+            {id:'1',city:'北京'},
+            {id:'2',city:'上海'},
+            {id:'3',city:'广州'},
+            {id:'4',city:'深圳'},
+            {id:'5',city:'武汉'}
+          ]
+          return <div>
+            <form>
+              <label>昵称:<input type='text' defaultValue={name} name='name'
+                onChange={this.nameChange}/></label>
+                <span className='danger'>{nameError}</span>
+              <br/>
+              <label>密码:<input type='password' defaultValue={password} name='password'
+                onChange={this.passwordChange}/></label>
+                <span className='danger'>{passwordError}</span>
+              <br/>
+              <label>性别:
+                <input type='radio' name='sex' value='1' 
+                  defaultChecked={sex==='1'?true:false}
+                  onChange={this.handleChange}/>男
+                <input type='radio' name='sex' value='2'
+                  defaultChecked={sex==='2'?true:false}
+                  onChange={this.handleChange}/>女
+              </label>
+              <br/>
+              <label>手机号:<input type='text' defaultValue={phone} name='phone'
+                onChange={this.phoneChange}/>
+              </label>
+              <span className='danger'>{phoneError}</span>
+              <br/>
+              <label>选择城市:
+                <select name='select' defaultValue={city} onChange={this.handleChange}>
+                  {
+                    arr2.map(item => {
+                      return <option key={item.id} value={item.id}>{item.city}</option>
+                    })
+                  } 
+              </select>
+              </label>
+              <br/>
+              <button onClick={this.handleSubmit}>提交</button>
+            </form>
+          </div>
+        }
+      }
+
+      ReactDOM.render(
+        <Hello />,
+        document.getElementById("root6")
+      )
+    </script>
+
+    <!-- 注册表单验证优化 -->
+    <script type='text/babel'>
+      class Hello extends React.Component{
+        state = {
+          name:'',
+          nameError:'',
+          password:'',
+          passwordError:'',
+          sex:'1',
+          phone:'',
+          phoneError:'',
+          city:''
+        }
+
+        //有校验的验证
+        handleTest(e,info1,info2){
+          const {name,value} = e.target
+          const rule = new RegExp(e.target.getAttribute('rule'))
+          console.log(rule,value)
+          let error = ''
+          if(!value){
+            error = info1
+          }else if(!rule.test(value)){
+            error = info2
+          }else{
+            error = ''
+          }
+          this.setState({
+            [name]:value,
+            [name+'Error']:error
+          })
+        }
+
+        //无校验的验证
+        handleChange = (e)=>{
+          const {name,value} = e.target
+          this.setState({[name]:value})
+        }
+
+        //处理表单的值
+        handleSubmit = ()=>{
+          const {name,password,sex,phone,city}  = this.state
+          const data = {name,password,sex,phone,city}
+          alert(JSON.stringify(data))
+          console.log(data)
+        }
+
+        render(){
+          let {name,nameError,password,passwordError,sex,phone,phoneError,city} = this.state
+          const arr2 = [
+            {id:'1',city:'北京'},
+            {id:'2',city:'上海'},
+            {id:'3',city:'广州'},
+            {id:'4',city:'深圳'},
+            {id:'5',city:'武汉'}
+          ]
+          return <div>
+            <form>
+              <label>昵称:<input type='text' defaultValue={name} name='name'
+                rule = '^[a-zA-Z0-9_-]{4,16}$'
+                onChange={(e)=>this.handleTest(e,'请输入昵称','请输入4-10位昵称')}/></label>
+                <span className='danger'>{nameError}</span>
+              <br/>
+              <label>密码:<input type='password' defaultValue={password} name='password'
+                rule = '^\S*(?=\S{6,12})(?=\S*\d)(?=\S*[A-Z])(?=\S*[a-z])(?=\S*[!@#$%^&*? ])\S*$'
+                onChange={(e)=>this.handleTest(e,'请输入密码','6-12位密码需要包含大小写字母和数字以及特殊符号')}
+                /></label>
+                <span className='danger'>{passwordError}</span>
+              <br/>
+              <label>性别:
+                <input type='radio' name='sex' value='1' 
+                  defaultChecked={sex==='1'?true:false}
+                  onChange={this.handleChange}/>男
+                <input type='radio' name='sex' value='2'
+                  defaultChecked={sex==='2'?true:false}
+                  onChange={this.handleChange}/>女
+              </label>
+              <br/>
+              <label>手机号:<input type='text' defaultValue={phone} name='phone'
+                rule = '^(?:(?:\+|00)86)?1[3-9]\d{9}$'
+                onChange={(e)=>this.handleTest(e,'请输入手机号','请输入格式正确的手机号')}/>
+              </label>
+              <span className='danger'>{phoneError}</span>
+              <br/>
+              <label>选择城市:
+                <select name='city' defaultValue={city} onChange={this.handleChange}>
+                  {
+                    arr2.map(item => {
+                      return <option key={item.id} value={item.id}>{item.city}</option>
+                    })
+                  } 
+              </select>
+              </label>
+              <br/>
+              <button disabled={!name||!password||!sex||!phone||!city} onClick={this.handleSubmit}>提交</button>
+            </form>
+          </div>
+        }
+      }
+
+      ReactDOM.render(
+        <Hello />,
+        document.getElementById("root7")
+      )
+    </script>
+  </body>
+</html>
