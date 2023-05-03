@@ -10,6 +10,20 @@ import Logouts from './06HOCComponent/06logout'
 import Registers from './06HOCComponent/07register'
 import AddProps from './06HOCComponent/08增加props'
 import LoginAuth from './07HOCComponent/登录鉴权'
+import AddClass from './08Hook/01Class累加器'
+import AddHook from './08Hook/02Hook累加器'
+import AddUseState from './08Hook/03useState'
+import UseStates from './08Hook/04多个状态'
+import UseCompactStates from './08Hook/05复杂状态'
+import UseStateFn from './08Hook/06useStateFn'
+import UseEffectClass from './09useEffect/01Class组件的生命周期方法'
+import UseEffect from './09useEffect/02useEffect'
+import UseEffects from './09useEffect/03useEffect'
+import UseClassInterval from './09useEffect/04Class组件清除定时器'
+import UseEffectInterval from './09useEffect/05useEffect'
+import UseRef from './10useRef/01useRef'
+import UseReducer from './11useReducer/01useReducer'
+import UseReducers from './11useReducer/02useReducer'
 
 function App(){
   return(
@@ -40,6 +54,32 @@ function App(){
       <hr />
       <h1>高阶组件登录鉴权</h1>
       <LoginAuth />
+      <hr />
+      <h1>Class累加器</h1>
+      <AddClass />
+      <h1>Hook累加器</h1>
+      <AddHook />
+      <h1>useState常规用法</h1>
+      <AddUseState />
+      <h1>多个状态</h1>
+      <UseStates />
+      <h1>多个复杂状态</h1>
+      <UseCompactStates />
+      <UseStateFn />
+      <hr/>
+      <h1>生命周期</h1>
+      <UseEffectClass /> 
+      <UseEffect />
+      <UseEffects />
+      <UseClassInterval />
+      <UseEffectInterval />
+      <hr/>
+      <h1>useRef</h1>
+      <UseRef />
+      <hr/>
+      <h1>useReducer</h1>
+      <UseReducer/>
+      <UseReducers />
     </div>
   )
 }

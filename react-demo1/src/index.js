@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import './App.css'
 
-for(let i=61;i<=100;i++){
+for(let i=75;i<=100;i++){
   console.log(`未看第${i}集`)
 }
 
