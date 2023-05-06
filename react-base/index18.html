@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>react18</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    
+    <!-- 用于解析babel -->
+    <script src="https://cdn.bootcss.com/babel-standalone/6.26.0/babel.js"></script>
+  </head>
+  <body>
+    <div>
+      <div id="root"></div>
+      <div id="root1"></div>
+    </div>
+
+    <script>
+      //创建元素（节点、属性、标签内容）
+      const element = React.createElement('div',{
+        onClick:()=>{
+          console.log("div click")
+        },
+        className:'wrapper'
+      },'hello word',
+      React.createElement("span",{},'i am child'),
+      React.createElement("span",{},'i am child')
+      )
+      //渲染元素
+      const root = ReactDOM.createRoot(document.getElementById("root"))
+      root.render(element)
+
+      /**
+       * vue-compiler
+       *  工具包: node服务执行fs读文件,读出来的文件以字符串的形式存在
+       *  做匹配: js 使用find、正则匹配等，最终会转换变成原生的vue写法 new Vue({})
+       * 
+       **/
+
+       /**
+        * npx ：npm的附带产物
+        * npx create-react-app my-app
+        * 1.一旦使用npx去执行一段命令,那么npx会首先看第一个参数对应的工具是否被安装
+        * 2.如果没有被安装，npx就会告诉npm临时安装一下，临时安装进内存
+        * 3.当临时安装好了以后，npx会再次直接执行整段命令"create-react-app my-app"
+        * 
+        * create-react-app:react的官方脚手架
+        * */
+    </script>
+
+    <script type="text/babel">
+      const reactDivElement = (
+        <div>
+          hello jsx
+          <span>i am child span</span>
+        </div>
+      )
+      const root1 = ReactDOM.createRoot(document.getElementById("root1"))
+      root1.render(reactDivElement)
+    </script>
+  </body>
+</html>

@@ -24,10 +24,38 @@ import UseEffectInterval from './09useEffect/05useEffect'
 import UseRef from './10useRef/01useRef'
 import UseReducer from './11useReducer/01useReducer'
 import UseReducers from './11useReducer/02useReducer'
+import ReportButton from './components/ReportButton'
+import Counter from './components/Counter'
+import { useState } from 'react'
 
 function App(){
+  const obj = {
+    a : 1
+  }
+  
+  obj[Symbol.iterator] = function* (){
+    for(let prop in obj){
+      yield [prop,obj[prop]]
+    }
+  }
+
+  const [countValue,setCountValue] = useState(10)
+  const handleClick = ()=>{
+    setCountValue(prev=>prev+1)
+  }
+
   return(
     <div>
+      {obj}
+      <ReportButton />
+      <Counter defaultValue={countValue}/>
+      <button onClick={handleClick}>点击我</button>
+      <div
+        style={{width:'100px',height:'200px',background:'red'}}
+        onMouseEnter={(event)=>{console.log(event)}}
+      >
+        i am a div 
+      </div>
       <p>下面是父子组件互相传值和props传值校验示例</p>
       <Fzindex />
       <hr />

@@ -2,9 +2,11 @@
 <html>
   <head>
     <title></title>
-    <!-- react的核心库和操作dom的核心库 -->
+    <!-- react的核心库 -->
     <script src="https://cdn.bootcss.com/react/16.8.6/umd/react.development.js"></script>
+    <!-- react渲染html元素到dom -->
     <script src="https://cdn.bootcss.com/react-dom/16.8.6/umd/react-dom.development.js"></script>
+    
     <!-- 用于解析babel -->
     <script src="https://cdn.bootcss.com/babel-standalone/6.26.0/babel.js"></script>
   </head>
@@ -46,7 +48,21 @@
       ReactDOM.render(_ul,document.getElementById("root1"))
     </script>
 
-    <!--es6写法(必须加上type="text/babel",会把jsx转换成React.createElement())  -->
+    <!--
+      es6写法(必须加上type="text/babel",会把jsx转换成React.createElement())  
+      type="text/babel" 将意味babel将接管所有的代码解析
+
+      babel会监听全局的document.contentLoad
+      [
+        1.当前页面的所有的script标签全部生成完毕，babel会拿到所有的script标签，document.getElementByTagName
+        2.读script上面的属性，通过getAttributes
+        3.如果type="text/babel",就把里面的代码全部拿过来，通过tansform方法转换一遍，通过新建一个script标签，将转换后的代码插入script中，将script插入到head标签
+      ]
+
+      浏览器会看到script标签的type再决定是否解析
+      如果不写type,type默认位text/Javascript，此时义Javascript的形式解析
+      module 如果不是这两个，浏览器不会看script里面的代码
+    -->
     <script type='text/babel'>
       ReactDOM.render(
         <ul>
