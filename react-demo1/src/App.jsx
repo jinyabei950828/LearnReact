@@ -20,12 +20,15 @@ import UseEffectClass from './09useEffect/01Class组件的生命周期方法'
 import UseEffect from './09useEffect/02useEffect'
 import UseEffects from './09useEffect/03useEffect'
 import UseClassInterval from './09useEffect/04Class组件清除定时器'
-import UseEffectInterval from './09useEffect/05useEffect'
 import UseRef from './10useRef/01useRef'
 import UseReducer from './11useReducer/01useReducer'
 import UseReducers from './11useReducer/02useReducer'
+// -------------------------------------------------
 import ReportButton from './components/ReportButton'
 import Counter from './components/Counter'
+import StudentList from './components/StudentList'
+import Tick from './components/Tick'
+
 import { useState } from 'react'
 
 function App(){
@@ -44,10 +47,16 @@ function App(){
     setCountValue(prev=>prev+1)
   }
 
+  //显示学生列表
+  const [showStudentList,setShowStudentList] = useState(false)
+  //显示倒计时
+  const [showTick,setShowTick] = useState(true)
+
+
   return(
     <div>
       {obj}
-      <ReportButton />
+      <ReportButton/>
       <Counter defaultValue={countValue}/>
       <button onClick={handleClick}>点击我</button>
       <div
@@ -100,7 +109,11 @@ function App(){
       <UseEffect />
       <UseEffects />
       <UseClassInterval />
-      <UseEffectInterval />
+      <hr/>
+      <button onClick={()=>setShowStudentList((prev)=>!prev)}>{showStudentList?'卸载':'显示'}学生列表</button>
+      {showStudentList?<StudentList />:null}
+      <button onClick={()=>setShowTick((prev)=>!prev)}>{showTick?'卸载':'显示'}活动抢购</button>
+      {showTick?<Tick />:null}
       <hr/>
       <h1>useRef</h1>
       <UseRef />

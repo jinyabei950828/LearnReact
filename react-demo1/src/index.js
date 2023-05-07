@@ -20,7 +20,22 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   //不是真正的dom元素，而是react元素
   //如果是大写开头的，react就默认为组件，小写就默认为react元素
-  <App />
+  <div className='app'>
+    <App />
+  </div>
 );
 
-//7-32
+console.log("app dom",document.getElementsByClassName("app")[0])
+requestIdleCallback(()=>{
+  console.log("app dom1",document.getElementsByClassName("app")[0])
+
+  const app = document.getElementsByClassName("app")[0]
+  app.addEventListener('click',(e)=>{
+    // e.stopPropagation()
+    console.log('app click')
+  })
+})
+
+//jsx->真实dom （编译转换）-> render是异步的
+
+//10-32

@@ -35,9 +35,21 @@
       <div>注册表单优化</div>
       <div id="root7"></div>
     </div>
-
+ 
     <!-- 受控组件(设置了value,怎么修改value都不起作用) -->
     <script type='text/babel'>
+      /**
+       * 受控:某个组件的状态完全由他人控制,而自身没有任何决定的权利
+       * 非受控:自由
+       * 
+       * React中,受控和非受控组件,我们只在表单中谈
+       * input 非受控只能通过defaultValue去设置初始值,然后通过绑定对应的事件去监听值
+       * 
+       * 在表单组件中，判断受控和非受控的标准是什么?[受控标签属性属性的植入]
+       * 1.input里面 受控标签属性-Value
+       * 2.checkbox里面 受控属性-checked
+       * 
+       **/
       class Hello extends React.Component{
         render(){
           return <input type='text' defaultValue='123'/>

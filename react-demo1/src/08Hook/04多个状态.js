@@ -6,6 +6,15 @@ export default function App() {
   const [star,setStar] = useState(['刘亦菲','古力娜扎','迪丽热巴','杨幂'])
   const [obj,setObj] = useState({name:'张三',age:14})
 
+  const updateObj = ()=>{
+    setObj(prev=>{
+      return{
+        ...prev,
+        name:'小白'
+      }
+    })
+  }
+
   return (
     <div>
       <h1>李四同学{age}岁</h1>
