@@ -7,7 +7,15 @@ koaApp.listen(8888,()=>{
   console.log('koa started at 8888')
 })
 
-koaApp.use((ctx)=>{
+function delay(duration=2000){
+  return new Promise((resolve,reject)=>{
+    setTimeout(()=>{
+      resolve()
+    },duration)
+  })
+}
+
+koaApp.use(async(ctx)=>{
   console.log("ctx",ctx.path,ctx.url)
   const {path} = ctx
   if(path==='/student'){
@@ -15,6 +23,7 @@ koaApp.use((ctx)=>{
     //返回数据
     const jsonData = require('./student.json');
     console.log('jsonData',jsonData)
+    await delay(2000)
     //返回给客户端
     ctx.response.body = jsonData
   }

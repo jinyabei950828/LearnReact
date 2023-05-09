@@ -38,4 +38,5 @@ requestIdleCallback(()=>{
 
 //jsx->真实dom （编译转换）-> render是异步的
 
-//10-32
+//23-32
+console.log(`还要学${32-23}集`)

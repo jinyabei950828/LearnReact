@@ -28,8 +28,11 @@ import ReportButton from './components/ReportButton'
 import Counter from './components/Counter'
 import StudentList from './components/StudentList'
 import Tick from './components/Tick'
+import ForceUpdateTest from './components/ForceUpdateTest'//自定义强制刷新组件
+import TestInput from './components/TestInput'
 
-import { useState } from 'react'
+import { useRef, useState,useCallback } from 'react'
+import ThemeContext from './context/themeContext'
 
 function App(){
   const obj = {
@@ -52,11 +55,26 @@ function App(){
   //显示倒计时
   const [showTick,setShowTick] = useState(true)
 
+  const testInputRef = useRef(null)
+
+  const handleClickForward = useCallback(()=>{
+    console.log("testInputRef===",testInputRef.current.focus())
+  },[])
+
+  const [theme,setTheme] = useState("light")
+  const changeTheme = ()=>{
+    setTheme(prev=>{
+      if(prev==='light')return "dark"
+      return "light"
+    })
+  }
 
   return(
     <div>
       {obj}
       <ReportButton/>
+      <TestInput ref={testInputRef}/>
+      <button onClick={handleClickForward}>click me1</button>
       <Counter defaultValue={countValue}/>
       <button onClick={handleClick}>点击我</button>
       <div
@@ -110,10 +128,14 @@ function App(){
       <UseEffects />
       <UseClassInterval />
       <hr/>
-      <button onClick={()=>setShowStudentList((prev)=>!prev)}>{showStudentList?'卸载':'显示'}学生列表</button>
-      {showStudentList?<StudentList />:null}
+      <ThemeContext.Provider value={theme}>
+        <button onClick={()=>setShowStudentList((prev)=>!prev)}>{showStudentList?'卸载':'显示'}学生列表</button>
+        {showStudentList?<StudentList />:null}
+        <button onClick={changeTheme}>改变主题</button>
+      </ThemeContext.Provider>
       <button onClick={()=>setShowTick((prev)=>!prev)}>{showTick?'卸载':'显示'}活动抢购</button>
       {showTick?<Tick />:null}
+      <ForceUpdateTest />
       <hr/>
       <h1>useRef</h1>
       <UseRef />

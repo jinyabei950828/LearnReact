@@ -1,13 +1,13 @@
 import axios from 'axios'
 
-const axiosInstance = axios.create({
-  baseURL:'http://localhost:8888',
-  proxy:{
+// const axiosInstance = axios.create({
+//   baseURL:'http://localhost:8888',
+//   proxy:{
 
-  }
-})
+//   }
+// })
 
 
 export const getStudentList = ()=>{
-  return axios.get("/studentList")
+  return axios.get("/api/student")
 }

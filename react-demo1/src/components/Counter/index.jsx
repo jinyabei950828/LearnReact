@@ -1,4 +1,4 @@
-import React ,{useState}from 'react'
+import React ,{useCallback, useMemo, useState}from 'react'
 
 /**
  * setState注意点:
@@ -38,19 +38,26 @@ export default function Counter(props) {
 
   //只要你调用setCount对数据产生了变动,那么当前使用了该状态的react组件就会重新渲染
 
-  const increase = ()=>{
+  const increase = useCallback(()=>{
     setCount(prev=>prev+1)
-  }
+  },[])
 
-  const decrease = ()=>{
+  const decrease = useMemo(()=>()=>{
     setCount(prev=>prev-1)
-  }
+  },[])
+
+  //不给依赖项的后果,使用得是首次渲染时刻的时间切片
+  const getCountValue = useCallback(()=>{
+    //每一次count的重新渲染,都会导致getCountValue重新刷新
+    console.log("最新的count值",count)
+  },[count])
 
   return (
     <div>
       <button onClick={increase}>+</button>
       <span>{count}</span>
       <button onClick={decrease}>-</button>
+      <button onClick={getCountValue}>get count value</button>
       <span>{props.defaultValue}</span>
     </div>
   )
