@@ -16,14 +16,14 @@ import './App.css'
  *  --可以被迭代的对象【包括数组、set、map...】,只要一个对象具备迭代接口（自身或者原型上有[Symbol.itrator]）,那么他就是可以被渲染的
  */
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  //不是真正的dom元素，而是react元素
-  //如果是大写开头的，react就默认为组件，小写就默认为react元素
-  <div className='app'>
-    <App />
-  </div>
-);
+// const root = ReactDOM.createRoot(document.getElementById('root'));
+// root.render(
+//   //不是真正的dom元素，而是react元素
+//   //如果是大写开头的，react就默认为组件，小写就默认为react元素
+//   <div className='app'>
+//     <App />
+//   </div>
+// );
 
 console.log("app dom",document.getElementsByClassName("app")[0])
 requestIdleCallback(()=>{
@@ -38,5 +38,20 @@ requestIdleCallback(()=>{
 
 //jsx->真实dom （编译转换）-> render是异步的
 
-//23-32
-console.log(`还要学${32-23}集`)
+//24-32
+console.log(`还要学${32-24}集`)
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+
+function render(){
+  root.render(
+    //不是真正的dom元素，而是react元素
+    //如果是大写开头的，react就默认为组件，小写就默认为react元素
+    <div className='app'>
+      <App />
+    </div>
+  );
+}
+
+render();
+window.render = render

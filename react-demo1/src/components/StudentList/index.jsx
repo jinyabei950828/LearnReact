@@ -75,6 +75,8 @@ import useReauestLoadingDispatcher from '../../hooks/useReauestLoadingDispatcher
 * useEffect:组件首次渲染工作工作完成并将真实dom生成到页面以后,将对应的回调函数推入到异步队列中等待执行
 * useLayoutEffect:组件首次渲染工作工作完成并将真实dom生成到页面以后,将对应的回调函数推入到同步队列中等待执行【useLayoutEffect会完全阻塞后续的更新工作】
 *
+* 
+* diff算法
 *
 **/
 

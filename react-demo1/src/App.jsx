@@ -30,6 +30,10 @@ import StudentList from './components/StudentList'
 import Tick from './components/Tick'
 import ForceUpdateTest from './components/ForceUpdateTest'//自定义强制刷新组件
 import TestInput from './components/TestInput'
+import TabView from './components/TabView'
+import TranasitionCase from './components/TransitionCase'
+import TestUseState from './components/TestUseState'
+import Buttons from './components/Button/index'
 
 import { useRef, useState,useCallback } from 'react'
 import ThemeContext from './context/themeContext'
@@ -73,6 +77,14 @@ function App(){
     <div>
       {obj}
       <ReportButton/>
+      <hr/>
+        <Buttons>
+          登录
+        </Buttons>
+        <TestUseState />
+        <TranasitionCase />
+        <TabView />
+      <hr/>
       <TestInput ref={testInputRef}/>
       <button onClick={handleClickForward}>click me1</button>
       <Counter defaultValue={countValue}/>
