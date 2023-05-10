@@ -24,9 +24,12 @@ let elementContainer = null
 
 function performUnitOfWork(deadline){
   if(presentWork==null){
+
+    console.log("prsentwork",presentWork,rootElementDescriptor)
     commitRoot(rootElementDescriptor)
     return;
   }
+
   //timeRemaining返回当前帧剩余时间
   if(deadline.timeRemaining()<10){//当前帧是否有额外的时间
     //没有任务时间了,就推入了下一帧（把本该一帧执行的任务分成多帧执行）
@@ -82,7 +85,7 @@ function commitRoot(_rootElement){
     console.log("===renderChildrenElements",renderChildrenElements,renderChildrenElements.next)
     elementContainer.appendChild(renderChildrenElements.dom)
     renderChildrenElements = renderChildrenElements.next
-  }while(renderChildrenElements.next)
+  }while(renderChildrenElements)
 }
 
 render(document.getElementById("root"))
